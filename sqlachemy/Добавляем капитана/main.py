@@ -34,10 +34,7 @@ def create_user(surname: str = None, name: str = None, age: int = None, position
     user.speciality = speciality
     user.address = address
     user.email = email
-    if hashed_password is None:
-        user.hashed_password = ' '.join([str(random.randint(0, 999)).zfill(3) for _ in range(2)])
-    else:
-        user.hashed_password = hashed_password
+    user.hashed_password = hashed_password
     db_sess = db_session.create_session()
     db_sess.add(user)
     db_sess.commit()
@@ -56,7 +53,7 @@ def create_job():
 
 
 if __name__ == '__main__':
-    db_session.global_init("db/users.db")
+    db_session.global_init("sqlachemy/Добавляем капитана/db/users.db")
     captain = ['Scott', 'Ridley', 21, 'captain', 'research engineer', 'module_1', 'scott_chief@mars.org']
     first_officer = ['Jones', 'Ellen', 35, 'first officer', 'navigation specialist', 'module_2', 'ellen_jones@mars.org']
     engineer = ['Smith', 'John', 28, 'engineer', 'mechanical engineer', 'module_3', 'john_smith@mars.org']
