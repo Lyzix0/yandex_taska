@@ -1,11 +1,14 @@
 from flask import Flask, render_template, redirect
 from flask_login import login_user, LoginManager
+from flask_restful import Api
 
+import users_resource
 from data import db_session
 from data.users import User
 from forms.login import LoginForm
 
 app = Flask(__name__)
+api = Api(app)
 app.config['SECRET_KEY'] = 'yandexlyceum_secret_key'
 
 login_manager = LoginManager()
@@ -52,6 +55,10 @@ def login():
                                message="Неправильный логин или пароль",
                                form=form)
     return render_template('login.html', title='Авторизация', form=form)
+
+
+api.add_resource(users_resource.UsersListResource, '/api/v2/users')
+api.add_resource(users_resource.UserResource, '/api/v2/users/<int:user_id>')
 
 
 if __name__ == '__main__':

@@ -2,11 +2,13 @@ import datetime
 import sqlalchemy
 
 from flask_login import UserMixin
+from sqlalchemy_serializer import SerializerMixin
+from werkzeug.security import generate_password_hash
 
 from data.db_session import SqlAlchemyBase
 
 
-class User(SqlAlchemyBase, UserMixin):
+class User(SqlAlchemyBase, UserMixin, SerializerMixin):
     __tablename__ = 'users'
 
     id = sqlalchemy.Column(sqlalchemy.Integer,
@@ -27,3 +29,6 @@ class User(SqlAlchemyBase, UserMixin):
         if self.hashed_password == password:
             return True
         return False
+
+    def set_password(self, password):
+        self.hashed_password = generate_password_hash(password)
